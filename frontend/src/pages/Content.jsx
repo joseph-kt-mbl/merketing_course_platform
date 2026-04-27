@@ -54,6 +54,17 @@ function Content() {
   return (
     <div className="content-container">
       <style>{`
+        :root {
+          --navy:       #1A237E;
+          --navy-dark:  #0D1257;
+          --navy-light: #283593;
+          --gold:       #C5A021;
+          --gold-light: #E8BE3A;
+          --gold-dark:  #9C7D12;
+          --gray:       #6B7280;
+          --border:     #E5E4EF;
+        }
+
         * {
           margin: 0;
           padding: 0;
@@ -62,17 +73,31 @@ function Content() {
 
         .content-container {
           min-height: 100vh;
-          background: linear-gradient(135deg, #0f172a 0%, #1a1f36 100%);
-          font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+          background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 40%, #1e2d8f 70%, #0a0e3d 100%);
+          font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           color: #f1f5f9;
           padding-bottom: 60px;
+          position: relative;
+        }
+
+        /* Background grid */
+        .content-container::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          background-image:
+            linear-gradient(rgba(197,160,33,.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(197,160,33,.04) 1px, transparent 1px);
+          background-size: 56px 56px;
+          z-index: 0;
         }
 
         /* Header */
         .content-header {
-          background: rgba(15, 23, 42, 0.8);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+          background: rgba(13, 18, 87, 0.6);
+          backdrop-filter: blur(14px);
+          border-bottom: 1px solid rgba(197, 160, 33, 0.12);
           padding: 20px 30px;
           display: flex;
           justify-content: space-between;
@@ -84,14 +109,8 @@ function Content() {
         }
 
         @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-20px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
         .header-left {
@@ -101,13 +120,17 @@ function Content() {
         }
 
         .logo {
-          font-size: 24px;
-          font-weight: 700;
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          font-size: 20px;
+          font-weight: 900;
+          color: white;
+          letter-spacing: -0.4px;
           cursor: pointer;
+        }
+
+        .logo em {
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          color: var(--gold-light);
         }
 
         .nav-items {
@@ -117,27 +140,30 @@ function Content() {
 
         .nav-item {
           font-size: 14px;
-          color: #cbd5e1;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.6);
           text-decoration: none;
           transition: all 0.3s ease;
           cursor: pointer;
           position: relative;
+          padding-bottom: 2px;
         }
 
         .nav-item:hover,
         .nav-item.active {
-          color: #3b82f6;
+          color: white;
         }
 
         .nav-item.active::after,
         .nav-item:hover::after {
           content: '';
           position: absolute;
-          bottom: -4px;
+          bottom: 0;
           left: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+          border-radius: 2px;
         }
 
         .header-right {
@@ -147,40 +173,43 @@ function Content() {
         }
 
         .search-bar {
-          background: rgba(30, 41, 59, 0.6);
-          border: 1px solid rgba(203, 213, 225, 0.1);
+          background: rgba(255, 255, 255, 0.07);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 8px;
           padding: 10px 16px;
-          color: #f1f5f9;
+          color: white;
           font-size: 13px;
+          font-family: 'Montserrat', inherit;
           transition: all 0.3s ease;
         }
 
+        .search-bar::placeholder { color: rgba(255, 255, 255, 0.35); }
+
         .search-bar:focus {
           outline: none;
-          border-color: #3b82f6;
-          background: rgba(30, 41, 59, 0.8);
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+          border-color: rgba(197, 160, 33, 0.4);
+          background: rgba(255, 255, 255, 0.11);
+          box-shadow: 0 0 0 3px rgba(197, 160, 33, 0.1);
         }
 
         .user-avatar {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+          background: linear-gradient(135deg, var(--gold-dark), var(--gold));
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 700;
+          font-weight: 900;
           font-size: 16px;
-          color: white;
+          color: var(--navy-dark);
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .user-avatar:hover {
           transform: scale(1.1);
-          box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+          box-shadow: 0 6px 20px rgba(197, 160, 33, 0.35);
         }
 
         /* Main Content */
@@ -188,6 +217,8 @@ function Content() {
           max-width: 1400px;
           margin: 0 auto;
           padding: 40px 30px;
+          position: relative;
+          z-index: 1;
         }
 
         .content-header-section {
@@ -196,29 +227,28 @@ function Content() {
         }
 
         @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
         .content-title {
           font-size: 36px;
-          font-weight: 700;
+          font-weight: 900;
           margin-bottom: 10px;
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: white;
+          letter-spacing: -0.8px;
+        }
+
+        .content-title em {
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          color: var(--gold-light);
         }
 
         .content-subtitle {
-          font-size: 16px;
-          color: #cbd5e1;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.5);
+          line-height: 1.7;
         }
 
         /* Course Grid */
@@ -229,41 +259,35 @@ function Content() {
         }
 
         .course-card {
-          background: rgba(30, 41, 59, 0.6);
-          border: 1px solid rgba(203, 213, 225, 0.1);
-          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(197, 160, 33, 0.12);
+          border-radius: 20px;
           overflow: hidden;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           cursor: pointer;
           animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
           flex-direction: column;
         }
 
-        .course-card:nth-child(2) {
-          animation-delay: 0.1s;
-        }
-
-        .course-card:nth-child(3) {
-          animation-delay: 0.2s;
-        }
+        .course-card:nth-child(2) { animation-delay: 0.1s; }
+        .course-card:nth-child(3) { animation-delay: 0.2s; }
 
         .course-card:hover {
-          background: rgba(30, 41, 59, 0.8);
-          border-color: rgba(203, 213, 225, 0.2);
+          border-color: rgba(197, 160, 33, 0.4);
           transform: translateY(-8px);
-          box-shadow: 0 16px 32px rgba(59, 130, 246, 0.15);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(197, 160, 33, 0.2);
         }
 
         .course-thumbnail {
           width: 100%;
           height: 180px;
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+          background: linear-gradient(135deg, rgba(26, 35, 126, 0.6) 0%, rgba(197, 160, 33, 0.2) 100%);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 64px;
-          border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+          border-bottom: 1px solid rgba(197, 160, 33, 0.1);
         }
 
         .course-content {
@@ -275,22 +299,24 @@ function Content() {
 
         .course-title {
           font-size: 16px;
-          font-weight: 700;
-          color: #f1f5f9;
+          font-weight: 800;
+          color: white;
           margin-bottom: 8px;
+          letter-spacing: -0.2px;
         }
 
         .course-instructor {
           font-size: 12px;
-          color: #94a3b8;
+          color: rgba(255, 255, 255, 0.45);
           margin-bottom: 12px;
+          font-weight: 500;
         }
 
         .course-description {
           font-size: 13px;
-          color: #cbd5e1;
+          color: rgba(255, 255, 255, 0.55);
           margin-bottom: 16px;
-          line-height: 1.5;
+          line-height: 1.6;
           flex: 1;
         }
 
@@ -299,57 +325,75 @@ function Content() {
           justify-content: space-between;
           margin-bottom: 16px;
           font-size: 12px;
-          color: #94a3b8;
+          color: rgba(255, 255, 255, 0.45);
+          font-weight: 600;
         }
 
         .progress-bar {
           width: 100%;
-          height: 6px;
-          background: rgba(203, 213, 225, 0.1);
-          border-radius: 3px;
+          height: 5px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50px;
           overflow: hidden;
           margin-bottom: 12px;
         }
 
         .progress-fill {
           height: 100%;
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-          border-radius: 3px;
-          transition: width 0.3s ease;
+          background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+          border-radius: 50px;
+          transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .course-rating {
           font-size: 12px;
-          color: #fbbf24;
+          color: var(--gold-light);
           margin-bottom: 16px;
+          font-weight: 700;
         }
 
         .course-button {
-          background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+          background: linear-gradient(135deg, var(--navy), var(--navy-light));
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: 10px;
           padding: 10px 16px;
-          font-size: 12px;
-          font-weight: 600;
+          font-size: 13px;
+          font-weight: 800;
+          font-family: 'Montserrat', inherit;
           cursor: pointer;
           transition: all 0.3s ease;
           align-self: flex-start;
+          position: relative;
+          overflow: hidden;
+          letter-spacing: 0.3px;
         }
 
-        .course-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        .course-button::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+          opacity: 0;
+          transition: opacity 0.3s ease;
         }
+
+        .course-button:hover::before { opacity: 1; }
+
+        .course-button:hover {
+          color: var(--navy-dark);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(197, 160, 33, 0.3);
+        }
+
+        .course-button span { position: relative; z-index: 1; }
 
         /* Modal */
         .modal-overlay {
           position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.7);
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(7, 11, 52, 0.75);
+          backdrop-filter: blur(6px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -358,23 +402,31 @@ function Content() {
         }
 
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
 
         .modal {
-          background: rgba(15, 23, 42, 0.95);
-          border: 1px solid rgba(203, 213, 225, 0.1);
-          border-radius: 16px;
+          background: linear-gradient(160deg, #111827 0%, #1a1f4e 100%);
+          border: 1px solid rgba(197, 160, 33, 0.2);
+          border-radius: 24px;
           max-width: 800px;
           width: 90%;
           max-height: 90vh;
           overflow-y: auto;
-          animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes modalIn {
+          from { opacity: 0; transform: scale(0.95) translateY(20px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-accent {
+          height: 4px;
+          background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+          border-radius: 24px 24px 0 0;
         }
 
         .modal-header {
@@ -382,43 +434,55 @@ function Content() {
           justify-content: space-between;
           align-items: center;
           padding: 24px;
-          border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+          border-bottom: 1px solid rgba(197, 160, 33, 0.1);
         }
 
         .modal-title {
           font-size: 20px;
-          font-weight: 700;
-          color: #f1f5f9;
+          font-weight: 900;
+          color: white;
+          letter-spacing: -0.4px;
         }
 
         .modal-close {
-          background: none;
+          background: rgba(255, 255, 255, 0.08);
           border: none;
-          color: #cbd5e1;
-          font-size: 24px;
+          color: white;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          font-size: 22px;
           cursor: pointer;
-          transition: color 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          line-height: 1;
         }
 
         .modal-close:hover {
-          color: #3b82f6;
+          background: rgba(239, 68, 68, 0.2);
+          color: #EF4444;
         }
 
-        .modal-content {
-          padding: 24px;
-        }
+        .modal-content { padding: 24px; }
 
         .video-placeholder {
           width: 100%;
           height: 400px;
-          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-          border-radius: 12px;
+          background: linear-gradient(135deg, rgba(26, 35, 126, 0.5) 0%, rgba(197, 160, 33, 0.15) 100%);
+          border: 1px solid rgba(197, 160, 33, 0.15);
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 64px;
           margin-bottom: 24px;
+          cursor: pointer;
+          transition: border-color 0.2s;
         }
+
+        .video-placeholder:hover { border-color: rgba(197, 160, 33, 0.35); }
 
         .course-info {
           display: grid;
@@ -429,109 +493,89 @@ function Content() {
         }
 
         .info-item {
-          background: rgba(30, 41, 59, 0.6);
-          border: 1px solid rgba(203, 213, 225, 0.1);
-          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(197, 160, 33, 0.1);
+          border-radius: 10px;
           padding: 12px;
         }
 
         .info-label {
-          font-size: 12px;
-          color: #94a3b8;
+          font-size: 11px;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.4);
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
           margin-bottom: 4px;
         }
 
         .info-value {
-          color: #f1f5f9;
-          font-weight: 600;
+          color: white;
+          font-weight: 800;
+          font-size: 15px;
         }
 
-        .materials-section {
-          margin-top: 24px;
-        }
+        .materials-section { margin-top: 24px; }
 
         .materials-title {
-          font-size: 14px;
-          font-weight: 700;
-          color: #f1f5f9;
+          font-size: 11px;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.4);
+          text-transform: uppercase;
+          letter-spacing: 1px;
           margin-bottom: 12px;
         }
 
         .material-item {
-          background: rgba(30, 41, 59, 0.6);
-          border: 1px solid rgba(203, 213, 225, 0.1);
-          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(197, 160, 33, 0.1);
+          border-radius: 10px;
           padding: 12px;
           margin-bottom: 8px;
           display: flex;
           justify-content: space-between;
           align-items: center;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.2s ease;
         }
 
         .material-item:hover {
-          background: rgba(30, 41, 59, 0.8);
-          border-color: rgba(203, 213, 225, 0.2);
+          background: rgba(197, 160, 33, 0.07);
+          border-color: rgba(197, 160, 33, 0.3);
         }
 
         .material-name {
           font-size: 13px;
-          color: #cbd5e1;
+          color: rgba(255, 255, 255, 0.7);
+          font-weight: 600;
         }
 
         .material-download {
-          color: #3b82f6;
+          color: var(--gold-light);
           cursor: pointer;
           font-size: 18px;
-          transition: transform 0.3s ease;
+          transition: transform 0.2s;
         }
 
-        .material-download:hover {
-          transform: scale(1.2);
-        }
+        .material-item:hover .material-download { transform: translateY(2px); }
 
         @media (max-width: 768px) {
-          .content-header {
-            flex-direction: column;
-            gap: 16px;
-          }
-
-          .nav-items {
-            display: none;
-          }
-
-          .search-bar {
-            display: none;
-          }
-
-          .content-title {
-            font-size: 24px;
-          }
-
-          .courses-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .course-info {
-            grid-template-columns: 1fr;
-          }
-
-          .modal {
-            width: 95%;
-            max-height: 95vh;
-          }
-
-          .video-placeholder {
-            height: 250px;
-          }
+          .content-header { flex-direction: column; gap: 16px; }
+          .nav-items      { display: none; }
+          .search-bar     { display: none; }
+          .content-title  { font-size: 24px; }
+          .courses-grid   { grid-template-columns: 1fr; }
+          .course-info    { grid-template-columns: 1fr; }
+          .modal          { width: 95%; max-height: 95vh; }
+          .video-placeholder { height: 250px; }
         }
       `}</style>
 
       {/* Header */}
       <div className="content-header">
         <div className="header-left">
-          <div className="logo" onClick={() => navigate('/dashboard')}>📚 LearnHub</div>
+          <div className="logo" onClick={() => navigate('/dashboard')}>
+            Master<em>Mind</em>
+          </div>
           <div className="nav-items">
             <a className="nav-item" onClick={() => navigate('/dashboard')}>Dashboard</a>
             <a className="nav-item active" onClick={() => navigate('/content')}>Courses</a>
@@ -578,7 +622,7 @@ function Content() {
                   e.stopPropagation();
                   setSelectedCourse(course);
                 }}>
-                  Continue →
+                  <span>Continue →</span>
                 </button>
               </div>
             </div>
@@ -590,6 +634,7 @@ function Content() {
       {selectedCourse && (
         <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-accent"></div>
             <div className="modal-header">
               <div className="modal-title">{selectedCourse.title}</div>
               <button className="modal-close" onClick={() => setSelectedCourse(null)}>×</button>
