@@ -1,0 +1,89 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWU5MmVmYjRiYWE3ZGJhNTIxYTEwOGYiLCJpYXQiOjE3NzY4OTE5NzIsImV4cCI6MTc3Njg5Mjg3Mn0.MsI13ciDlOTbpSjZQEaCk0uZ4tWDmgnm45iM0j-QYyU"
+tcoTPwsYAHs3JJI8s06q7QEGdy_zlhecCp2g0Q8O7RRi578NjVV3OPar1YF3piLX
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWU5NDNmMjg5NjE2OWRjZjYwNjQ5NmQiLCJpYXQiOjE3NzY5NzM1NjQsImV4cCI6MTc3Njk3MzYyNH0.AZOafly6EYpBwJDPQO3SqoDX7FWYddkt7_e_srYeTbM
+
+curl \
+--ssl-reqd \
+--url 'smtp://sandbox.smtp.mailtrap.io:2525' \
+--user 'c37fde5dc24fbf:****3ecf' \
+--mail-from from@example.com \
+--mail-rcpt to@example.com \
+--upload-file - <<EOF
+From: Magic Elves <from@example.com>
+To: Mailtrap Sandbox <to@example.com>
+Subject: You are awesome!
+Content-Type: multipart/alternative; boundary="boundary-string"
+
+--boundary-string
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Congrats for sending test email with Mailtrap!
+
+If you are viewing this email in your sandbox =E2=80=93 the integration works.
+Now send your email using our SMTP server and integration of your choice!
+
+Good luck! Hope it works.
+
+--boundary-string
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+
+<!doctype html>
+<html><body><a href='http://localhost:5173/content'>GO!</a></body></html>
+
+--boundary-string--
+EOF
+
+
+curl \
+--ssl-reqd \
+--url 'smtp://sandbox.smtp.mailtrap.io:2525' \
+--user 'c37fde5dc24fbf:7a4910f2ff3ecf' \
+--mail-from from@example.com \
+--mail-rcpt to@example.com \
+--upload-file - <<EOF
+From: Magic Elves <from@example.com>
+To: Mailtrap Sandbox <to@example.com>
+Subject: You are awesome!
+Content-Type: multipart/alternative; boundary="boundary-string"
+
+--boundary-string
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Congrats for sending test email with Mailtrap!
+
+If you are viewing this email in your sandbox =E2=80=93 the integration works.
+Now send your email using our SMTP server and integration of your choice!
+
+Good luck! Hope it works.
+
+--boundary-string
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+  </head>
+  <body style=3D"font-family: sans-serif;">
+  <a href='http://localhost:5173/content'>GO!</a>
+    
+    <!-- Example of invalid for email html/css, will be detected by Mailtrap: -->
+    <style>
+      .main { background-color: white; }
+      a:hover { border-left-width: 1em; min-height: 2em; }
+    </style>
+  </body>
+</html>
+
+--boundary-string--
+EOF

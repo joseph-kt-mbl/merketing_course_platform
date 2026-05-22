@@ -1,10 +1,14 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { fetchProfile } from '../store/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 function Welcome() {
   const [searchParams] = useSearchParams();
   const userEmail = searchParams.get('email');
   const navigate = useNavigate();
+
+  const dispatch = useDispatch()
 
   const [emailExists, setEmailExists] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -157,7 +161,10 @@ function Welcome() {
       // Store token and redirect to dashboard
       if (data.accessToken) {
         localStorage.setItem('accessToken', data.accessToken);
-          navigate('/dashboard');
+        const result = await dispatch(fetchProfile());
+          if(fetchProfile.fulfilled.match(result)){
+            navigate('/dashboard');
+          }
       }
     } catch (err) {
       setMessage(err.message || "Invalid password. Please try again.");

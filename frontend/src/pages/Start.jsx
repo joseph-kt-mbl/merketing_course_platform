@@ -1,18 +1,20 @@
 import { useState ,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './../authContext';
-
+import { useSelector } from "react-redux";
+import { selectUser ,selectAuthLoading} from "../store/AuthSlice";
+import Skeleton from "../components/Skeleton";
+  
 function Start() {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
+  const loading = useSelector(selectAuthLoading);
   const navigate = useNavigate();
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
     }
-  }, [user]);
+  }, [user, loading]);
 
   const [email, setEmail] = useState('');
-  const [focused, setFocused] = useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -24,6 +26,16 @@ function Start() {
       navigate(`/welcome?email=${encodeURIComponent(email)}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <Skeleton height={40} width="60%" />
+        <Skeleton height={20} width="80%" />
+        <Skeleton height={20} width="90%" />
+      </div>
+    );
+  }
 
   return (
     <div className="start-container">
@@ -53,7 +65,6 @@ function Start() {
         .start-container {
           min-height: 100vh;
           display: flex;
-          align-items: center;
           justify-content: center;
           background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 40%, #1e2d8f 70%, #0a0e3d 100%);
           font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -228,8 +239,10 @@ function Start() {
 
         /* ── CARD ── */
         .start-card {
+          /* transform: translateY(-171px); */
           background: white;
           border-radius: 24px;
+          margin-top: 72px;
           padding: 60px 50px;
           max-width: 480px;
           width: 100%;

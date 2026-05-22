@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.pay-page {
+  font-family: 'Sora', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f5f7;
+  padding: 2rem 1rem;
+}
+
+.pay-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* ─── Top colour strip ───────────────────────────────────── */
+.pay-strip        { height: 4px; background: #00B37D; }
+.pay-strip.success { background: #00B37D; }
+.pay-strip.failed  { background: #E24B4A; }
+
+/* ─── Body ───────────────────────────────────────────────── */
+.pay-body {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* ─── Chargily badge ─────────────────────────────────────── */
+.chargily-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f7f8fa;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 100px;
+  padding: 8px 16px 8px 10px;
+}
+
+.chargily-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #00B37D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chargily-label {
+  font-size: 13px;
+  color: #5f6368;
+  font-weight: 400;
+}
+
+.chargily-label strong {
+  color: #00B37D;
+  font-weight: 600;
+}
+
+/* ─── Text ───────────────────────────────────────────────── */
+.pay-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  text-align: center;
+}
+
+.pay-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 320px;
+}
+
+/* ─── Loading spinner ────────────────────────────────────── */
+.spinner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0.5rem 0;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2.5px solid #e5e7eb;
+  border-top-color: #00B37D;
+  border-radius: 50%;
+  animation: pay-spin 0.8s linear infinite;
+}
+
+@keyframes pay-spin { to { transform: rotate(360deg); } }
+
+.spinner-text {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #9ca3af;
+  letter-spacing: 0.04em;
+  animation: pay-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pay-pulse { 0%,100%{opacity:0.45} 50%{opacity:1} }
+
+/* ─── Meta row ───────────────────────────────────────────── */
+.pay-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.meta-dot { opacity: 0.4; }
+
+/* ─── Status icons ───────────────────────────────────────── */
+.status-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pay-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.status-icon-wrap.success {
+  background: rgba(0, 179, 125, 0.1);
+  border: 1.5px solid rgba(0, 179, 125, 0.25);
+}
+
+.status-icon-wrap.failed {
+  background: rgba(226, 75, 74, 0.08);
+  border: 1.5px solid rgba(226, 75, 74, 0.22);
+}
+
+@keyframes pay-pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.status-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon.success { background: #00B37D; }
+.status-icon.failed  { background: #E24B4A; }
+
+/* ─── Detail rows ────────────────────────────────────────── */
+.detail-rows {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 13px;
+}
+
+.detail-row:last-child { border-bottom: none; }
+
+.detail-label { color: #6b7280; }
+
+.detail-value {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.detail-value.success { color: #00B37D; }
+.detail-value.failed  { color: #E24B4A; }
+.detail-value.mono    { font-family: 'JetBrains Mono', monospace; }
+.detail-value.small   { font-size: 11px; }
+
+.detail-value.chargily-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Error box ──────────────────────────────────────────── */
+.error-box {
+  width: 100%;
+  background: #fef2f2;
+  border: 1px solid rgba(226, 75, 74, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #991b1b;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.error-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #7f1d1d;
+}
+
+.error-desc {
+  line-height: 1.55;
+  opacity: 0.85;
+}
+
+/* ─── Buttons ────────────────────────────────────────────── */
+.pay-btn {
+  width: 100%;
+  padding: 13px;
+  background: #f7f8fa;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.pay-btn:hover  { background: #eef0f3; }
+.pay-btn:active { transform: scale(0.98); }
+
+.pay-btn.primary {
+  background: #00B37D;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.pay-btn.primary:hover { background: #009e6e; }
+
+.pay-btn.failed-btn { background: #E24B4A; border-color: transparent; color: #fff; }
+.pay-btn.failed-btn:hover { background: #c73c3b; }
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.pay-divider { height: 1px; background: rgba(0, 0, 0, 0.06); }
+
+.pay-footer {
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pay-footer-left,
+.pay-footer-right {
+  font-size: 12px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00B37D;
+  flex-shrink: 0;
+}
+
+/* ─── Dark mode ──────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .pay-page   { background: #111827; }
+  .pay-card   { background: #1f2937; border-color: rgba(255,255,255,0.08); box-shadow: none; }
+  .pay-title  { color: #f9fafb; }
+  .pay-subtitle, .detail-label, .pay-meta, .pay-footer-left, .pay-footer-right, .spinner-text { color: #9ca3af; }
+  .chargily-badge { background: #111827; border-color: rgba(255,255,255,0.07); }
+  .chargily-label { color: #9ca3af; }
+  .detail-rows { border-color: rgba(255,255,255,0.07); }
+  .detail-row  { border-bottom-color: rgba(255,255,255,0.06); }
+  .detail-value { color: #f3f4f6; }
+  .pay-btn    { background: #374151; border-color: rgba(255,255,255,0.1); color: #d1d5db; }
+  .pay-btn:hover { background: #4b5563; }
+  .error-box  { background: rgba(226,75,74,0.1); border-color: rgba(226,75,74,0.25); color: #fca5a5; }
+  .error-title { color: #fca5a5; }
+  .pay-divider { background: rgba(255,255,255,0.06); }
+  .spinner    { border-color: rgba(255,255,255,0.1); border-top-color: #00B37D; }
+}

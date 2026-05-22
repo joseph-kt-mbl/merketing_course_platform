@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Admin Panel – Course Studio | Lessons & Quizzes</title>
+  <!-- Google Fonts + simple reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--off-white);
+      color: var(--navy-dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    :root {
+      --navy: #1A237E;
+      --navy-dark: #0D1257;
+      --navy-mid: #1B2590;
+      --navy-light: #283593;
+      --gold: #C5A021;
+      --gold-light: #E8BE3A;
+      --gold-pale: #F5DFA0;
+      --gold-dark: #9C7D12;
+      --off-white: #F8F7F2;
+      --warm-white: #FDFCF8;
+      --card-bg: #FFFFFF;
+      --gray-soft: #6B7280;
+      --gray-light: #F0EFE9;
+      --green: #059669;
+      --green-light: #10B981;
+      --border-soft: rgba(26, 35, 36, .09);
+      --gold-glow: rgba(197, 160, 33, .18);
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--off-white);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold-dark);
+      border-radius: 3px;
+    }
+
+    /* admin layout */
+    .admin-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem 2rem 3rem;
+    }
+
+    /* header */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--gold-pale);
+      padding-bottom: 1rem;
+    }
+    .header-title h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .header-title p {
+      color: var(--gray-soft);
+      font-size: 0.85rem;
+    }
+    .token-status {
+      background: var(--card-bg);
+      border-radius: 40px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 8px var(--border-soft);
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-token {
+      background: var(--gold-pale);
+      padding: 4px 10px;
+      border-radius: 40px;
+      color: var(--navy-dark);
+      font-family: monospace;
+    }
+
+    /* cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+      padding: 1.8rem;
+      margin-bottom: 2.5rem;
+      transition: all 0.2s;
+      border: 1px solid var(--border-soft);
+    }
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      border-left: 5px solid var(--gold);
+      padding-left: 1rem;
+    }
+    .card-title i {
+      color: var(--gold-dark);
+    }
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .input-group label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--navy-mid);
+    }
+    input, textarea, select {
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-soft);
+      background: var(--warm-white);
+      font-family: 'Montserrat', monospace;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+    button {
+      background: var(--navy);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    button i { font-size: 1rem; }
+    button:hover {
+      background: var(--navy-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26,35,126,0.2);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--navy);
+      color: var(--navy);
+    }
+    .btn-outline:hover {
+      background: var(--gold-pale);
+      border-color: var(--gold);
+      color: var(--navy-dark);
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy-dark);
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+    }
+    hr {
+      margin: 1rem 0;
+      border-color: var(--border-soft);
+    }
+    .lesson-item, .quiz-badge {
+      background: var(--gray-light);
+      border-radius: 24px;
+      padding: 0.8rem 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lesson-title {
+      font-weight: 600;
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+    .lesson-order {
+      background: var(--gold-pale);
+      border-radius: 30px;
+      padding: 2px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-points {
+      font-size: 0.75rem;
+      background: var(--off-white);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .action-icons i {
+      margin: 0 6px;
+      cursor: pointer;
+      color: var(--gray-soft);
+      transition: 0.2s;
+    }
+    .action-icons i:hover { color: var(--gold-dark); }
+    .flex-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .alert {
+      background: var(--gold-pale);
+      padding: 12px 20px;
+      border-radius: 30px;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .quiz-question-item {
+      background: var(--off-white);
+      margin: 10px 0;
+      padding: 14px;
+      border-radius: 18px;
+    }
+    .inline-code {
+      font-family: monospace;
+      background: #ececec;
+      padding: 2px 8px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+    }
+    @media (max-width: 680px) {
+      .admin-container { padding: 1rem; }
+      .card { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="admin-container">
+  <div class="admin-header">
+    <div class="header-title">
+      <h1><i class="fas fa-chalkboard-teacher"></i> Lesson & Quiz Studio</h1>
+      <p>Manage course modules, lessons, and assessments — complete backend sync</p>
+    </div>
+    <div class="token-status">
+      <i class="fas fa-key"></i> <span id="authStatusMsg">Checking auth...</span>
+      <button id="logoutBtn" class="badge-token" style="background:var(--gray-light);"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <!-- Fixed course context (hardcoded for demo: use your actual courseId from DB) -->
+  <div class="alert" style="background: var(--navy); color: white; justify-content: space-between;">
+    <span><i class="fas fa-book-open"></i> <strong>Course ID:</strong> <span id="activeCourseId">66f8c2a1b3e4c5d6e7f8a901</span> (using your default course — replace if needed)</span>
+    <span><i class="fas fa-database"></i> All lessons & quizzes belong to this course</span>
+  </div>
+
+  <!-- ==================== SECTION 1: LESSON MANAGEMENT ==================== -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-file-alt"></i> Lessons Manager</div>
+    <div class="form-grid">
+      <div class="input-group">
+        <label>Lesson Title *</label>
+        <input type="text" id="lessonTitle" placeholder="e.g., Introduction to JavaScript">
+      </div>
+      <div class="input-group">
+        <label>Content (Markdown / HTML)</label>
+        <textarea rows="3" id="lessonContent" placeholder="Full lesson content..."></textarea>
+      </div>
+      <div class="input-group">
+        <label>Order (unique per course) *</label>
+        <input type="number" id="lessonOrder" placeholder="1,2,3...">
+      </div>
+      <div class="input-group">
+        <label>Points earned *</label>
+        <input type="number" id="lessonPoints" value="10">
+      </div>
+      <div class="flex-btns">
+        <button id="createLessonBtn"><i class="fas fa-plus-circle"></i> Create Lesson</button>
+        <button id="fetchLessonsBtn" class="btn-outline"><i class="fas fa-sync-alt"></i> Refresh Lesson List</button>
+      </div>
+    </div>
+    <hr>
+    <div><strong><i class="fas fa-list"></i> Existing lessons</strong> <span id="lessonCountBadge" style="margin-left: 8px;"></span></div>
+    <div id="lessonsListContainer" style="margin-top: 15px;">
+      <div class="alert" style="background: var(--gray-light);"><i class="fas fa-spinner fa-pulse"></i> Loading lessons...</div>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 2: QUIZ ADMIN (create & edit) ==================== -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-question-circle"></i> Quizzes Engine (per lesson)</div>
+    <div class="form-grid">
+      <div class="input-group">
+        <label>Select Lesson (for quiz) *</label>
+        <select id="quizLessonSelect">
+          <option value="">-- Choose lesson --</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Passing Score (%) *</label>
+        <input type="number" id="passingScore" value="70" min="0" max="100">
+      </div>
+      <div class="input-group">
+        <label>Quiz Title (optional)</label>
+        <input type="text" id="quizTitle" placeholder="e.g., JS Fundamentals Quiz">
+      </div>
+      <div id="questionsBuilder">
+        <label><strong>Questions <span style="color:var(--gold-dark);">(dynamic list)</span></strong></label>
+        <div id="questionsContainer"></div>
+        <button type="button" id="addQuestionBtn" class="btn-outline" style="margin-top: 8px;"><i class="fas fa-plus"></i> Add question</button>
+      </div>
+      <div class="flex-btns">
+        <button id="createQuizBtn"><i class="fas fa-save"></i> Create / Replace Quiz</button>
+        <button id="fetchQuizBtn" class="btn-outline"><i class="fas fa-eye"></i> Fetch current quiz</button>
+        <button id="deleteQuizQuestionBtn" class="btn-outline" style="background:#fff0f0;"><i class="fas fa-trash-alt"></i> Delete last question (demo)</button>
+      </div>
+    </div>
+    <hr>
+    <div><strong><i class="fas fa-clipboard-list"></i> Current quiz preview</strong> <span id="quizPreviewInfo"></span></div>
+    <div id="currentQuizDisplay" style="background: var(--gray-light); border-radius: 20px; padding: 12px; margin-top: 12px; font-size: 0.85rem;"></div>
+  </div>
+
+  <!-- ==================== SECTION 3: Lesson additional actions ==================== -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-edit"></i> Lesson Actions (edit / delete)</div>
+    <div class="input-group">
+      <label>Lesson ID to edit/delete</label>
+      <input type="text" id="targetLessonId" placeholder="e.g., 66f8c2a1b3e4c5d6e7f8a999">
+    </div>
+    <div class="flex-btns">
+      <button id="editLessonByIdBtn"><i class="fas fa-pen"></i> Edit (title/order/points)</button>
+      <button id="deleteLessonByIdBtn" style="background: #9e2d2f;"><i class="fas fa-trash"></i> Delete Lesson</button>
+    </div>
+    <div id="editFieldsPanel" style="display: none; margin-top: 16px; background: var(--warm-white); padding: 16px; border-radius: 24px;">
+      <input type="text" id="editTitle" placeholder="New Title">
+      <input type="number" id="editOrder" placeholder="New Order">
+      <input type="number" id="editPoints" placeholder="New Points">
+      <textarea id="editContent" rows="2" placeholder="New content (optional)"></textarea>
+      <button id="confirmEditLessonBtn" style="background: var(--navy); margin-top: 8px;">Confirm update</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ======================== GLOBALS ========================
+  const API_BASE = 'http://localhost:5000/api/lessons';        // root as described (api/lessons)
+  const COURSE_ID = document.getElementById('activeCourseId').innerText; // static demo courseId (replace with real one from env)
+  let accessToken = localStorage.getItem('accessToken') || '';
+
+  // Helper: fetch wrapper with auth bearer
+  async function apiFetch(endpoint, options = {}) {
+    const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+      ...options.headers,
+    };
+    const res = await fetch(url, { ...options, headers });
+    if (res.status === 401) {
+      document.getElementById('authStatusMsg').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Unauthorized — invalid token';
+      throw new Error('Unauthorized');
+    }
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || 'Request failed');
+    return json;
+  }
+
+  // update auth UI
+  function updateAuthUI() {
+    const statusSpan = document.getElementById('authStatusMsg');
+    if (accessToken) {
+      statusSpan.innerHTML = `<i class="fas fa-check-circle" style="color:var(--green);"></i> Authenticated (admin)`;
+    } else {
+      statusSpan.innerHTML = `<i class="fas fa-lock"></i> No token — please login`;
+    }
+  }
+
+  // logout
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('accessToken');
+    accessToken = '';
+    updateAuthUI();
+    alert('Logged out. Reload or re-enter token manually.');
+  });
+
+  // MANUAL token set (simulate login from local storage)
+  function initToken() {
+    const stored = localStorage.getItem('accessToken');
+    if (stored) accessToken = stored;
+    updateAuthUI();
+  }
+  initToken();
+
+  // =============== LESSON CRUD ===============
+  async function loadLessons() {
+    try {
+      const data = await apiFetch(`/course/${COURSE_ID}`);
+      const lessons = data.lessons || [];
+      const container = document.getElementById('lessonsListContainer');
+      if (!lessons.length) {
+        container.innerHTML = `<div class="alert"><i class="fas fa-info-circle"></i> No lessons found for this course.</div>`;
+        document.getElementById('lessonCountBadge').innerText = '(0)';
+        return;
+      }
+      document.getElementById('lessonCountBadge').innerHTML = `(${lessons.length})`;
+      container.innerHTML = lessons.map(lesson => `
+        <div class="lesson-item" data-lesson-id="${lesson._id}" data-lesson-order="${lesson.order}">
+          <div class="lesson-title">
+            <span class="lesson-order">Order ${lesson.order}</span>
+            <strong>${escapeHtml(lesson.title)}</strong>
+            <span class="badge-points"><i class="fas fa-star"></i> ${lesson.points} pts</span>
+          </div>
+          <div class="action-icons">
+            <i class="fas fa-copy" title="Copy ID" onclick="copyToClipboard('${lesson._id}')"></i>
+            <i class="fas fa-edit" title="Prefill edit" onclick="prefillEditLesson('${lesson._id}', '${escapeHtml(lesson.title)}', ${lesson.order}, ${lesson.points}, '${escapeHtml(lesson.content || '')}')"></i>
+          </div>
+        </div>
+      `).join('');
+      // refresh lesson select dropdown for quiz
+      populateLessonSelect(lessons);
+    } catch (err) {
+      document.getElementById('lessonsListContainer').innerHTML = `<div class="alert">❌ Failed load lessons: ${err.message}</div>`;
+    }
+  }
+
+  function populateLessonSelect(lessons) {
+    const select = document.getElementById('quizLessonSelect');
+    select.innerHTML = '<option value="">-- Choose lesson --</option>';
+    lessons.forEach(lesson => {
+      select.innerHTML += `<option value="${lesson._id}" data-order="${lesson.order}">[Order ${lesson.order}] ${escapeHtml(lesson.title)}</option>`;
+    });
+  }
+
+  async function createLesson() {
+    const title = document.getElementById('lessonTitle').value.trim();
+    const content = document.getElementById('lessonContent').value;
+    const order = parseInt(document.getElementById('lessonOrder').value);
+    const points = parseInt(document.getElementById('lessonPoints').value);
+    if (!title || isNaN(order) || isNaN(points)) {
+      alert('Title, order, points required');
+      return;
+    }
+    try {
+      await apiFetch('/add', {
+        method: 'POST',
+        body: JSON.stringify({ title, content, courseId: COURSE_ID, order, points })
+      });
+      alert('Lesson created successfully');
+      clearLessonForm();
+      loadLessons();
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
+  }
+
+  function clearLessonForm() {
+    document.getElementById('lessonTitle').value = '';
+    document.getElementById('lessonContent').value = '';
+    document.getElementById('lessonOrder').value = '';
+    document.getElementById('lessonPoints').value = '10';
+  }
+
+  window.prefillEditLesson = (id, title, order, points, content) => {
+    document.getElementById('targetLessonId').value = id;
+    document.getElementById('editTitle').value = title;
+    document.getElementById('editOrder').value = order;
+    document.getElementById('editPoints').value = points;
+    document.getElementById('editContent').value = content;
+    document.getElementById('editFieldsPanel').style.display = 'block';
+  };
+
+  async function updateLesson() {
+    const lessonId = document.getElementById('targetLessonId').value.trim();
+    if (!lessonId) return alert('Lesson ID required');
+    const title = document.getElementById('editTitle').value;
+    const order = document.getElementById('editOrder').value ? parseInt(document.getElementById('editOrder').value) : undefined;
+    const points = document.getElementById('editPoints').value ? parseInt(document.getElementById('editPoints').value) : undefined;
+    const content = document.getElementById('editContent').value || undefined;
+    const payload = {};
+    if (title) payload.title = title;
+    if (order !== undefined) payload.order = order;
+    if (points !== undefined) payload.points = points;
+    if (content !== undefined) payload.content = content;
+    if (Object.keys(payload).length === 0) return alert('Provide at least one field');
+    try {
+      await apiFetch(`/edit/${lessonId}`, { method: 'PUT', body: JSON.stringify(payload) });
+      alert('Lesson updated');
+      loadLessons();
+      document.getElementById('editFieldsPanel').style.display = 'none';
+    } catch (err) {
+      alert(`Update failed: ${err.message}`);
+    }
+  }
+
+  async function deleteLessonById() {
+    const lessonId = document.getElementById('targetLessonId').value.trim();
+    if (!lessonId || !confirm('Permanently delete lesson and associated quizzes?')) return;
+    try {
+      await apiFetch(`/delete/${lessonId}`, { method: 'DELETE' });
+      alert('Lesson deleted');
+      loadLessons();
+      document.getElementById('targetLessonId').value = '';
+    } catch (err) {
+      alert(`Delete failed: ${err.message}`);
+    }
+  }
+
+  // =============== QUIZ MANAGEMENT ===============
+  let currentQuestionsArray = [];
+
+  function renderQuestionsUI() {
+    const container = document.getElementById('questionsContainer');
+    if (currentQuestionsArray.length === 0) {
+      container.innerHTML = '<div class="alert" style="background: var(--gold-pale);">➕ Add questions below</div>';
+      return;
+    }
+    container.innerHTML = currentQuestionsArray.map((q, idx) => `
+      <div class="quiz-question-item">
+        <strong>Q${idx+1}:</strong> <input type="text" value="${escapeHtml(q.question)}" data-qidx="${idx}" class="q-text" style="width:70%; margin-bottom:6px;"><br>
+        <div>Options: <input type="text" class="q-opt" data-qidx="${idx}" data-optidx="0" value="${escapeHtml(q.options[0] || '')}" placeholder="Option A" style="width:30%;">
+        <input type="text" class="q-opt" data-qidx="${idx}" data-optidx="1" value="${escapeHtml(q.options[1] || '')}" placeholder="Option B" style="width:30%;">
+        <input type="text" class="q-opt" data-qidx="${idx}" data-optidx="2" value="${escapeHtml(q.options[2] || '')}" placeholder="Option C (optional)" style="width:30%;">
+        </div>
+        <div>Correct index (0-2): <input type="number" class="q-correct" data-qidx="${idx}" value="${q.correctAnswerIndex}" style="width:70px;"></div>
+        <button class="btn-outline remove-single-q" data-idx="${idx}" style="margin-top:6px; padding:4px 10px;">Remove</button>
+      </div>
+    `).join('');
+    // attach events dynamically
+    document.querySelectorAll('.q-text').forEach(el => {
+      el.addEventListener('change', (e) => { const idx = parseInt(el.dataset.qidx); currentQuestionsArray[idx].question = el.value; });
+    });
+    document.querySelectorAll('.q-opt').forEach(el => {
+      el.addEventListener('change', (e) => { const idx = parseInt(el.dataset.qidx); const optIdx = parseInt(el.dataset.optidx); if (!currentQuestionsArray[idx].options) currentQuestionsArray[idx].options = []; currentQuestionsArray[idx].options[optIdx] = el.value; });
+    });
+    document.querySelectorAll('.q-correct').forEach(el => {
+      el.addEventListener('change', (e) => { const idx = parseInt(el.dataset.qidx); currentQuestionsArray[idx].correctAnswerIndex = parseInt(el.value); });
+    });
+    document.querySelectorAll('.remove-single-q').forEach(btn => {
+      btn.addEventListener('click', (e) => { const idx = parseInt(btn.dataset.idx); currentQuestionsArray.splice(idx, 1); renderQuestionsUI(); });
+    });
+  }
+
+  document.getElementById('addQuestionBtn').addEventListener('click', () => {
+    currentQuestionsArray.push({
+      question: 'New question?',
+      options: ['Option A', 'Option B', 'Option C'],
+      correctAnswerIndex: 0,
+    });
+    renderQuestionsUI();
+  });
+
+  async function createOrReplaceQuiz() {
+    const lessonId = document.getElementById('quizLessonSelect').value;
+    if (!lessonId) return alert('Please select a lesson');
+    if (currentQuestionsArray.length === 0) return alert('At least one question needed');
+    const passingScore = parseInt(document.getElementById('passingScore').value);
+    const title = document.getElementById('quizTitle').value || 'Quiz';
+    // prepare questions with correctAnswer string mapping
+    const questionsPayload = currentQuestionsArray.map(q => {
+      const opts = q.options.filter(opt => opt && opt.trim() !== '');
+      if (opts.length < 2) opts.push('Default placeholder');
+      const correctIdx = Math.min(q.correctAnswerIndex, opts.length-1);
+      return {
+        question: q.question,
+        options: opts,
+        correctAnswerIndex: correctIdx,
+      };
+    });
+    try {
+      await apiFetch('/api/quizzes', {  // note: quiz routes base defined separately, but our server route is /api/quizzes (we adapt to absolute)
+        method: 'POST',
+        body: JSON.stringify({
+          courseId: COURSE_ID,
+          lessonId: lessonId,
+          questions: questionsPayload,
+          passingScore,
+          title
+        })
+      }, true);
+      alert('Quiz created/updated for this lesson!');
+      fetchCurrentQuiz(lessonId);
+    } catch (err) {
+      alert(`Quiz creation error: ${err.message}`);
+    }
+  }
+
+  async function fetchCurrentQuiz(lessonId = null) {
+    const selectedLesson = lessonId || document.getElementById('quizLessonSelect').value;
+    if (!selectedLesson) { document.getElementById('currentQuizDisplay').innerHTML = '<i class="fas fa-info"></i> Select a lesson to fetch its quiz.'; return; }
+    try {
+      // get lesson by id to retrieve order for quiz route (we use api/quizzes/order/:order? alternative but we call getQuiz endpoint using order from lesson)
+      const lessonData = await apiFetch(`/id/${selectedLesson}`);
+      const lesson = lessonData.lesson;
+      if (!lesson) throw new Error('Lesson fetch failed');
+      const order = lesson.order;
+      const quizResponse = await fetch(`${API_BASE.replace('/lessons','')}/quizzes/order/${order}`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+      if (!quizResponse.ok) {
+        if (quizResponse.status === 404) { document.getElementById('currentQuizDisplay').innerHTML = `<div class="alert">📖 No quiz yet for this lesson</div>`; return; }
+        throw new Error('Quiz fetch error');
+      }
+      const quizJson = await quizResponse.json();
+      if (quizJson.success && quizJson.quiz) {
+        const quiz = quizJson.quiz;
+        document.getElementById('currentQuizDisplay').innerHTML = `
+          <strong>${escapeHtml(quiz.title)}</strong> | passing: ${quiz.passingScore}% <br>
+          <strong>${quiz.questions?.length || 0} questions</strong>
+          <pre style="font-size:12px; margin-top:8px;">${JSON.stringify(quiz.questions, null, 2).substring(0, 400)}</pre>
+        `;
+        // prefill local builder
+        if (quiz.questions) {
+          currentQuestionsArray = quiz.questions.map(q => ({
+            question: q.question,
+            options: q.options,
+            correctAnswerIndex: q.options.indexOf(q.correctAnswer),
+          }));
+          renderQuestionsUI();
+        }
+      }
+    } catch(err) {
+      document.getElementById('currentQuizDisplay').innerHTML = `<div>⚠️ ${err.message}</div>`;
+    }
+  }
+
+  async function deleteLastQuestionDemo() {
+    if (currentQuestionsArray.length === 0) return alert('No questions to delete');
+    currentQuestionsArray.pop();
+    renderQuestionsUI();
+  }
+
+  // helpers
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+  window.copyToClipboard = (text) => { navigator.clipboard.writeText(text); alert('ID copied'); };
+
+  // event bindings
+  document.getElementById('createLessonBtn').addEventListener('click', createLesson);
+  document.getElementById('fetchLessonsBtn').addEventListener('click', loadLessons);
+  document.getElementById('editLessonByIdBtn').addEventListener('click', () => { document.getElementById('editFieldsPanel').style.display = 'block'; });
+  document.getElementById('confirmEditLessonBtn').addEventListener('click', updateLesson);
+  document.getElementById('deleteLessonByIdBtn').addEventListener('click', deleteLessonById);
+  document.getElementById('createQuizBtn').addEventListener('click', createOrReplaceQuiz);
+  document.getElementById('fetchQuizBtn').addEventListener('click', () => fetchCurrentQuiz());
+  document.getElementById('deleteQuizQuestionBtn').addEventListener('click', deleteLastQuestionDemo);
+
+  // initial load
+  loadLessons();
+
+  // add manual fallback if needed for quiz routes (ensure base url)
+  window.apiFetch = apiFetch;
+</script>
+</body>
+</html>

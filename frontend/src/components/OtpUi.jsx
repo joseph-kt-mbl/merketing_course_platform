@@ -1,16 +1,19 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchProfile } from '../store/AuthSlice';
 
 function OtpUi() {
   const [searchParams] = useSearchParams();
   const userEmail = searchParams.get('email');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(null); // 'success', 'error', null
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+  const [timeLeft, setTimeLeft] = useState(60); // 5 minutes
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef([]);
 
@@ -104,12 +107,17 @@ function OtpUi() {
       // Store token if provided
       if (data.accessToken) {
         localStorage.setItem('accessToken', data.accessToken);
-      }
+        const result = await dispatch(fetchProfile());
 
-      // Redirect to dashboard after success
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500);
+        if (fetchProfile.fulfilled.match(result)) {
+          navigate('/dashboard');
+        } else {
+          setMessage("Session error. Please login.");
+          setStatus("error");
+        }
+      }
+      
+
     } catch (err) {
       setMessage(err.message || "Failed to verify OTP. Please try again.");
       setStatus("error");

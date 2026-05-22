@@ -1,9 +1,10 @@
-import { useAuth } from './../authContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from "react-redux";
+import { selectUser } from "../store/AuthSlice";
 
 function Content() {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showMenu, setShowMenu] = useState(false);

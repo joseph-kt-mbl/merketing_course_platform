@@ -1,10 +1,12 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef} from 'react';
 
 function Verify() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const navigate = useNavigate();
+
+  const calledOnce = useRef(false);
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -20,6 +22,9 @@ function Verify() {
 
   useEffect(() => {
     const verifyToken = async () => {
+      if (calledOnce.current) return;
+      calledOnce.current = true;
+
       if (!token) {
         setMessage("No verification token found");
         setStatus("error");
